@@ -193,7 +193,7 @@ void editReservation(int &resCount, int &custCount)
     cout << "Enter the Reserved Room Number to edit: ";
     cin >> rNum;
 
-    for (int i = 0; i < resCount; i++)
+    for (int i = 0; i < CUSTSIZE; i++)
     {
         if (customersArr[i].roomNumber == rNum)
         {
@@ -810,7 +810,7 @@ int main()
     }
 
     int resCount = 0;
-    int custCount = 5;
+    int custCount = 6;
 
     //      Running Sequence
     start(resCount, custCount);
