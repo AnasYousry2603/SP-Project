@@ -283,8 +283,8 @@ void View_room_reviews(int &resCount, int &custCount)
                 cout << "Time of Review: " << reviewsArr[i].Date_valid.day << "/" << reviewsArr[i].Date_valid.month << "/" << reviewsArr[i].Date_valid.year << " .\n";
                 cout << "Review: " << reviewsArr[i].Review_content << endl;
                 reviewsArr[i].Seen = true;
+                cout << "\n";
             }
-            cout << "\n";
         }
     }
     else if (choice == 2)
