@@ -369,7 +369,7 @@ void customerLogOut(int &resCount, int &custCount)
     start(resCount, custCount);
 }
 
-stRoom ReadReserveRoomInfo(int &resCount, int &custCount)
+stRoom ReadReserveRoomInfo()
 {
     cout << "Enter The Room You want to reserve: \n";
     stRoom Room;
@@ -403,7 +403,7 @@ bool CheckRoomIsBooked(stRoom Room)
     return false;
 }
 
-void ReserveRoomScreen(int &custCount)
+void ReserveRoomScreen()
 {
     // system("cls");
     cout << "\n\n";
@@ -423,16 +423,16 @@ bool Ask(string TheAsk)
         return false;
 }
 
-void ReserveRoom(int &resCount, int &custCount) // this is the main function
+void ReserveRoom(int& resCount, int& custCount) // this is the main function
 {
-
-    ReserveRoomScreen(custCount); // clear screen and show header
+    bool Found = false;
+    ReserveRoomScreen(); // clear screen and show header
     stRoom Room;
-    Room = ReadReserveRoomInfo(resCount, custCount);
+    Room = ReadReserveRoomInfo();
 
     if (Ask("\n\nAre you sure you want reserve this room ? (y/n)? "))
     {
-        if (!CheckRoomIsBooked(Room)) // if booked
+        if (CheckRoomIsBooked(Room)) // if booked
             cout << "\nSorry,This Room is already booked.\n";
         else
         {
@@ -448,7 +448,13 @@ void ReserveRoom(int &resCount, int &custCount) // this is the main function
                         // customersArr[resCount].roomNumber = Room.roomNumber;
                         customersArr[loggedInIndex].roomNumber = Room.roomNumber;
                         resCount++;
+                        Found = true;
+                        break;
                     }
+                }
+                if (Found)
+                {
+                    break;
                 }
             }
 
@@ -459,14 +465,14 @@ void ReserveRoom(int &resCount, int &custCount) // this is the main function
     menu(resCount, custCount);
 }
 
-void CancelRoomScreen(int &custCount)
+void CancelRoomScreen()
 {
     // system("cls");
     cout << "--------------------------------------------------\n";
     cout << "                Cancel Room Screen                \n";
     cout << "--------------------------------------------------\n\n";
 }
-stRoom ReadCancelRoomInfo(int &resCount, int &custCount)
+stRoom ReadCancelRoomInfo()
 {
     cout << "Enter The Room number you want to cancle:\n";
     stRoom Room;
@@ -491,13 +497,13 @@ bool CheckCustomerIsBookedThisRoomByCustomer(stRoom Room)
     }
     return false;
 }
-void CancelRoom(int &resCount, int &custCount) // this is the main function
+void CancelRoom(int& resCount, int& custCount) // this is the main function
 {
-
-    CancelRoomScreen(custCount); // clear screen and show header
+    bool Found=false;
+    CancelRoomScreen(); // clear screen and show header
 
     stRoom Room;
-    Room = ReadCancelRoomInfo(resCount, custCount);
+    Room = ReadCancelRoomInfo();
 
     if (Ask("\n\nAre you sure you want Cancel this room ? (y/n)? "))
     {
@@ -511,8 +517,13 @@ void CancelRoom(int &resCount, int &custCount) // this is the main function
                     {
                         roomsArr[i][j].isAvailable = true;
                         roomsArr[i][j].RoomID = "";
+                        Found = true;
                         break;
                     }
+                }
+                if (Found)
+                {
+                    break;
                 }
             }
 
