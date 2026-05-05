@@ -831,6 +831,23 @@ void saveReviews(Review reviewsArr[], int reviewCount)
     }
 }
 
+void saveRooms(stRoom roomsArr[5][10], int floors_count, int rooms_count)
+{
+    ofstream outFile("rooms.txt");
+    if (outFile.is_open())
+    {
+        for (int i = 0; i < floors_count; i++)
+        {
+            for (int j = 0; j < rooms_count; j++){
+                outFile << roomsArr[i][j].RoomID << "\n"
+                        << roomsArr[i][j].roomNumber << "\n"
+                        << roomsArr[i][j].isAvailable << "\n";
+            }
+        }
+        outFile.close();
+    }
+}
+
 void loadCustomers(Customer customersArr[], int n)
 {
     ifstream inFile("customers.txt");
@@ -894,6 +911,35 @@ void loadReviews(Review reviewsArr[], int n)
         inFile.close();
     }
 }
+
+void loadRooms(stRoom roomsArr[5][10], int floors_count, int rooms_count)
+{
+    ifstream inFile("rooms.txt");
+    
+    if (inFile.is_open()) 
+    {     
+        for (int i = 0; i < floors_count; i++)
+        {
+            for (int j = 0; j < rooms_count; j++)
+            {
+                // 1. Read the RoomID (assuming it's a string on its own line)
+                if (!getline(inFile, roomsArr[i][j].RoomID)) break;
+
+                // 2. Read numeric data
+                // Use [i][j] to specify the exact room in the 2D grid
+                inFile >> roomsArr[i][j].roomNumber;
+                inFile >> roomsArr[i][j].isAvailable;
+                
+                // 3. Clean up
+                // This skips the newline character so getline works in the next iteration
+                inFile.ignore();
+            }
+        }
+    }
+        
+    inFile.close();
+}
+
 //----------------------------------------------------------------------------------------------
 //----------------------------------- | MAIN FUNCTION | ----------------------------------------
 //----------------------------------------------------------------------------------------------
@@ -912,6 +958,7 @@ int main()
     loadCustomers(customersArr, custCount);
     loadAdmins(adminsArr, adminCount);
     loadReviews(reviewsArr, reviewCount);
+    loadRooms(roomsArr, FLOORS, ROOMS);
 
     // 2. Fallback: If files don't exist (e.g., first time running), load hardcoded defaults
     if (custCount == 0 && adminCount == 0)
@@ -963,4 +1010,6 @@ int main()
     saveCustomers(customersArr, custCount);
     saveAdmins(adminsArr, adminCount);
     saveReviews(reviewsArr, reviewCount);
+    saveRooms(roomsArr, FLOORS, ROOMS);
+    
 }

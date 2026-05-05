@@ -86,3 +86,9 @@
 
 // too much newlines
 // PROBLEM SOLVED
+
+// saving and loading problem
+// PROBLEM SOLVED
+
+// rooms array not saved or loaded
+// FIXED
