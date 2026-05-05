@@ -248,8 +248,8 @@ void showLastMonth()
 
     for (int i = 0; i < MAXREVIEWS; i++)
     {
-       
-        if (reviewsArr[i].Date_valid.year == year && (month - reviewsArr[i].Date_valid.month == 1|| reviewsArr[i].Date_valid.month - month == 0) && reviewsArr[i].Date_valid.day <= day)
+
+        if (reviewsArr[i].Date_valid.year == year && (month - reviewsArr[i].Date_valid.month == 1 || reviewsArr[i].Date_valid.month - month == 0) && reviewsArr[i].Date_valid.day <= day)
         {
             cout << "\n----------- Review ------------\n";
             cout << "Review for Room: " << reviewsArr[i].Room_number << endl;
@@ -276,7 +276,7 @@ void View_room_reviews(int& resCount, int& custCount)
 
             if (reviewsArr[i].Review_content != "###")
             {
-            
+
                 cout << "\n----------- Review ------------\n";
                 cout << "Review for Room: " << reviewsArr[i].Room_number << endl;
                 cout << "Time of Review: " << reviewsArr[i].Date_valid.day << "/" << reviewsArr[i].Date_valid.month << "/" << reviewsArr[i].Date_valid.year << " .\n";
@@ -305,7 +305,7 @@ void View_room_reviews(int& resCount, int& custCount)
                 count++;
             }
 
-            if (count==0)
+            if (count == 0)
             {
                 cout << "\n\nNo unseen reviews currently.\n\n";
                 break;
@@ -381,7 +381,7 @@ stRoom ReadReserveRoomInfo()
     stRoom Room;
     cin >> Room.roomNumber;
     Check_Choice_Validity(Room.roomNumber, 1, 50);
-    
+
     cout << "\nPLease Enter Start Date ? (DD/MM/YYYY)?";
     cin >> customersArr[loggedInIndex].StartDate.day >> customersArr[loggedInIndex].StartDate.month >> customersArr[loggedInIndex].StartDate.year;
     cout << "\nPLease Enter End Date ? (DD/MM/YYYY)?";
@@ -400,12 +400,13 @@ bool CheckRoomIsBooked(stRoom Room)
         {
             if (roomsArr[i][j].roomNumber == Room.roomNumber) // if room status = true will return true otherwise false
             {
-                
+
                 return !roomsArr[i][j].isAvailable;
             }
         }
     }
- 
+
+
 }
 
 void ReserveRoomScreen()
@@ -483,7 +484,7 @@ stRoom ReadCancelRoomInfo()
     stRoom Room;
     cin >> Room.roomNumber;
     Check_Choice_Validity(Room.roomNumber, 1, 50);
-   
+
     return Room;
 }
 bool CheckCustomerIsBookedThisRoom(stRoom Room)
@@ -492,17 +493,17 @@ bool CheckCustomerIsBookedThisRoom(stRoom Room)
     {
         for (int j = 0; j < ROOMS; j++)
         {
-            if (Room.roomNumber == roomsArr[i][j].roomNumber )
+            if (Room.roomNumber == roomsArr[i][j].roomNumber)
             {
                 return (customersArr[loggedInIndex].CustomerID == roomsArr[i][j].RoomID && !roomsArr[i][j].isAvailable);
             }
         }
     }
-  
+
 }
 void CancelRoom(int& resCount, int& custCount) // this is the main function
 {
-    bool Found=false;
+    bool Found = false;
     CancelRoomScreen(); // clear screen and show header
 
     stRoom Room;
@@ -516,7 +517,7 @@ void CancelRoom(int& resCount, int& custCount) // this is the main function
             {
                 for (int j = 0; j < ROOMS; j++)
                 {
-                    if (roomsArr[i][j].RoomID == Room.RoomID)
+                    if (roomsArr[i][j].roomNumber == Room.roomNumber)
                     {
                         roomsArr[i][j].isAvailable = true;
                         roomsArr[i][j].RoomID = "";
@@ -730,9 +731,9 @@ void review(int& resCount, int& custCount)
     // cin >> reviewsArr[counter_of_review_number].Room_number;
     cout << "Enter the room that you want to add review ? ";
     stRoom Room;
-    cin >> Room.roomNumber ;
+    cin >> Room.roomNumber;
     Check_Choice_Validity(Room.roomNumber, 1, 50);
-    if(CheckCustomerIsBookedThisRoom(Room))
+    if (CheckCustomerIsBookedThisRoom(Room))
     {
         reviewsArr[counter_of_review_number].Room_number = Room.roomNumber;
         int day, month, year;
@@ -752,7 +753,7 @@ void review(int& resCount, int& custCount)
     {
         cout << "\nErorr!\n This Room is NOT booked to add review.\n";
     }
-    
+
     menu(resCount, custCount);
 }
 
@@ -850,6 +851,23 @@ void saveReviews(Review reviewsArr[], int reviewCount)
     }
 }
 
+void saveRooms(stRoom roomsArr[5][10], int floors_count, int rooms_count)
+{
+    ofstream outFile("rooms.txt");
+    if (outFile.is_open())
+    {
+        for (int i = 0; i < floors_count; i++)
+        {
+            for (int j = 0; j < rooms_count; j++) {
+                outFile << roomsArr[i][j].RoomID << "\n"
+                    << roomsArr[i][j].roomNumber << "\n"
+                    << roomsArr[i][j].isAvailable << "\n";
+            }
+        }
+        outFile.close();
+    }
+}
+
 void loadCustomers(Customer customersArr[], int n)
 {
     ifstream inFile("customers.txt");
@@ -913,6 +931,35 @@ void loadReviews(Review reviewsArr[], int n)
         inFile.close();
     }
 }
+
+void loadRooms(stRoom roomsArr[5][10], int floors_count, int rooms_count)
+{
+    ifstream inFile("rooms.txt");
+
+    if (inFile.is_open())
+    {
+        for (int i = 0; i < floors_count; i++)
+        {
+            for (int j = 0; j < rooms_count; j++)
+            {
+                // 1. Read the RoomID (assuming it's a string on its own line)
+                if (!getline(inFile, roomsArr[i][j].RoomID)) break;
+
+                // 2. Read numeric data
+                // Use [i][j] to specify the exact room in the 2D grid
+                inFile >> roomsArr[i][j].roomNumber;
+                inFile >> roomsArr[i][j].isAvailable;
+
+                // 3. Clean up
+                // This skips the newline character so getline works in the next iteration
+                inFile.ignore();
+            }
+        }
+    }
+
+    inFile.close();
+}
+
 //----------------------------------------------------------------------------------------------
 //----------------------------------- | MAIN FUNCTION | ----------------------------------------
 //----------------------------------------------------------------------------------------------
@@ -931,6 +978,7 @@ int main()
     loadCustomers(customersArr, custCount);
     loadAdmins(adminsArr, adminCount);
     loadReviews(reviewsArr, reviewCount);
+    loadRooms(roomsArr, FLOORS, ROOMS);
 
     // 2. Fallback: If files don't exist (e.g., first time running), load hardcoded defaults
     if (custCount == 0 && adminCount == 0)
@@ -982,4 +1030,6 @@ int main()
     saveCustomers(customersArr, custCount);
     saveAdmins(adminsArr, adminCount);
     saveReviews(reviewsArr, reviewCount);
+    saveRooms(roomsArr, FLOORS, ROOMS);
+
 }
