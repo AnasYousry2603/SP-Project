@@ -686,8 +686,9 @@ void signUp(int& resCount, int& custCount)
     } while (!check);
     cout << "Enter your password: ";
     cin >> customersArr[custCount].Password;
-    cout << "Please enter your id number: ";
-    cin >> customersArr[custCount].CustomerID;
+    /*cout << "Please enter your id number: ";
+    cin >> customersArr[custCount].CustomerID;*/
+    customersArr[custCount].CustomerID = to_string(100 + custCount);
     custCount++;
     cout << "Account is activated successfully \n";
     char choice;
@@ -703,6 +704,10 @@ void signUp(int& resCount, int& custCount)
         else if (choice == 'n' || choice == 'N')
         {
             cout << "thank you for your visit \n";
+            saveCustomers(customersArr, custCount);
+            saveAdmins(adminsArr, ADMINCOUNT);
+            saveReviews(reviewsArr, counter_of_review_number);
+            saveRooms(roomsArr, FLOORS, ROOMS);
             break;
         }
         else
@@ -840,7 +845,7 @@ void CheckRoomsBookedNow(int custCount)
 
                 for (int k = 0; k < custCount; k++)
                 {
-                    if (customersArr[k].CustomerID == roomsArr[i][j].RoomID && IsDate1AfterDate2(DateNow, customersArr[k].EndDate ))
+                    if (customersArr[k].CustomerID == roomsArr[i][j].RoomID && IsDate1AfterDate2(DateNow, customersArr[k].EndDate))
                     {
 
                         roomsArr[i][j].RoomID = "";
@@ -902,7 +907,7 @@ void saveCustomers(Customer customersArr[], int custCount)
     ofstream outFile("customers.txt"); // Create/overwrite file
     if (outFile.is_open())
     {
-        for (int i = 0; i <= custCount; i++)
+        for (int i = 0; i < custCount; i++)
         {
             outFile << customersArr[i].CustomerID << "\n"
                 << customersArr[i].Name << "\n"
@@ -1104,17 +1109,17 @@ int main()
         customersArr[2] = { "102", "Omar Osama", "Omar@gmail.com", "omarOS", "omaros123", "7777888899990000" };
         customersArr[3] = { "103", "Anas", "Anas@gmail.com", "drageez", "anas123", "0000111122223333" };
         customersArr[4] = { "104", "Moaz", "Moaz@gmail.com", "moaz", "moaz123", "3333444455556666" };
-        customersArr[5] = { "104", "Omar Emad", "Moaz@gmail.com", "omarEM", "omarem123", "6666777788889999" };
+        customersArr[5] = { "105", "Omar Emad", "Moaz@gmail.com", "omarEM", "omarem123", "6666777788889999" };
 
         custCount = 6;
 
         //      Pre-defined Reviews
-        reviewsArr[0] = { 2, 2, 2026, "very nice room & service", 1, 1 };
-        reviewsArr[1] = { 14, 2, 2026, "good vacation spot", 2, 2 };
-        reviewsArr[2] = { 27, 1, 2026, "horrible service & staff", 3, 10 };
-        reviewsArr[3] = { 2, 4, 2026, "the rooms were very nice and clean and had a great view!", 4, 19 };
-        reviewsArr[4] = { 13, 1, 2026, "it was okay.", 5, 27 };
-        reviewsArr[5] = { 25, 12, 2025, "the food was great.", 6, 48 };
+        reviewsArr[0] = { {2, 2, 2026}, "very nice room & service", 1, 1 };
+        reviewsArr[1] = { {14, 2, 2026}, "good vacation spot", 2, 2 };
+        reviewsArr[2] = { {27, 1, 2026}, "horrible service & staff", 3, 10 };
+        reviewsArr[3] = { {2, 4, 2026}, "the rooms were very nice and clean and had a great view!", 4, 19 };
+        reviewsArr[4] = { {13, 1, 2026}, "it was okay.", 5, 27 };
+        reviewsArr[5] = { {25, 12, 2025}, "the food was great.", 6, 48 };
 
         reviewCount = 6;
     }
