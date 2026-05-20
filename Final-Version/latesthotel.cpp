@@ -334,24 +334,24 @@ void View_room_reviews(int &resCount, int &custCount)
     cout << "(2) for Unseen reviews" << endl;
     cout << "(3) for Last 30 days reviews" << endl;
     cin >> choice;
+    Check_Choice_Validity(choice, 1, 3);
+
     if (choice == 1)
     {
         for (int i = 0; i < counter_of_review_number; i++)
         {
 
             // if (reviewsArr[i].Review_content != "###")
-            if (true)
-            {
 
-                cout << "\n----------- Review ------------\n";
-                cout << "Review for Room: " << reviewsArr[i].Room_number << endl;
-                cout << "Time of Review: " << reviewsArr[i].Date_valid.day << "/" << reviewsArr[i].Date_valid.month << "/" << reviewsArr[i].Date_valid.year << " .\n";
-                cout << "Review: " << reviewsArr[i].Review_content << endl;
-                cout << "_______________________________\n";
+            cout << "\n----------- Review ------------\n";
+            cout << "Review for Room: " << reviewsArr[i].Room_number << endl;
+            cout << "Time of Review: " << reviewsArr[i].Date_valid.day << "/" << reviewsArr[i].Date_valid.month << "/" << reviewsArr[i].Date_valid.year << " .\n";
+            cout << "Review: " << reviewsArr[i].Review_content << endl;
+            cout << "_______________________________\n";
 
-                reviewsArr[i].Seen = true;
-                cout << "\n";
-            }
+            reviewsArr[i].Seen = true;
+            cout << "\n";
+        
         }
     }
     else if (choice == 2)
@@ -1202,8 +1202,8 @@ int main()
     loadRooms(roomsArr, FLOORS, ROOMS);
 
     // 2. Fallback: If files don't exist (e.g., first time running), load hardcoded defaults
-    // if (custCount == 0 && adminCount == 0)
-    // {
+    if (custCount == 0 || adminCount == 0)
+    {
 
     //      Pre-defined Admins
     adminsArr[0] = {"yahia", "yahiaadmin123", 1};
@@ -1212,6 +1212,7 @@ int main()
     adminsArr[3] = {"anas", "anasadmin123", 4};
     adminsArr[4] = {"moaz", "moazadmin123", 5};
     adminsArr[5] = {"m7md", "m7mdadmin123", 6};
+    adminCount = 6;
 
     //      Pre-defined Customers
     customersArr[0] = {"100", "Yahia", "yahiakhaledhelal@gmail.com", "sitos", "yahia123", "1111222233334444"};
@@ -1220,6 +1221,7 @@ int main()
     customersArr[3] = {"103", "Anas", "Anas@gmail.com", "drageez", "anas123", "0000111122223333"};
     customersArr[4] = {"104", "Moaz", "Moaz@gmail.com", "moaz", "moaz123", "3333444455556666"};
     customersArr[5] = {"105", "Omar Emad", "Moaz@gmail.com", "omarEM", "omarem123", "6666777788889999"};
+    custCount = 6;
 
     //      Pre-defined Reviews
     reviewsArr[0] = {{2, 2, 2026}, "very nice room & service", 1, 1, true};
@@ -1230,7 +1232,7 @@ int main()
     reviewsArr[5] = {{25, 12, 2025}, "the food was great.", 6, 48, true};
 
     reviewCount = 6;
-    // }
+    }
 
     // 3. Room initialization
     for (int i = 0; i < FLOORS; i++)
